@@ -1,0 +1,49 @@
+{
+    "name": "angryjack/beget-api",
+    "type": "library",
+    "description": "A PHP library for using Beget's API",
+    "keywords": [
+        "angryjack", "beget-api", "beget-php-library"
+    ],
+    "homepage": "https://github.com/angryjack/beget-api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "angryjack",
+            "email": "angryj2ck@gmail.com",
+            "homepage": "https://github.com/angryjack",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : ">=5.6",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : ">=5.4.3",
+        "squizlabs/php_codesniffer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Angryjack\\Beget\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Angryjack\\Beget\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs src tests",
+        "fix-style": "phpcbf src tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
