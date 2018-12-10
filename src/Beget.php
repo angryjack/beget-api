@@ -80,7 +80,7 @@ class Beget
         }
         $section = ucfirst(strtolower($section));
 
-        $class = 'Angryjack\Beget\Section\\' . $section;
+        $class = __NAMESPACE__ . '\Section\\' . $section;
 
         return new $class($this->instanceLogin, $this->instancePassword);
     }
@@ -89,18 +89,44 @@ class Beget
      * @param $section
      * @param $method
      * @param array $params
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return mixed
      */
-    public function sendRequest($section, $method)
+    public function request($section, $method, array $params = [])
     {
-        $request = self::API_URL . $section . $method .
-                    '?login=' . $this->instanceLogin .
-                    '&passwd=' . $this->instancePassword .
-                    '&input_format=' . $this->inputFormat .
-                    '&output_format=' . $this->outputFormat;
+        $request = $this->makeRequest($section, $method, $params);
+        $response = $this->sendRequest($request);
 
+        return $response->getBody();
+    }
+
+    /**
+     * @param $request
+     * @return mixed
+     */
+    protected function sendRequest($request)
+    {
         $client = new Client();
         return $client->request('POST', $request);
+    }
+
+    /**
+     * @param $section
+     * @param $method
+     * @param array $params
+     * @return string
+     */
+    protected function makeRequest($section, $method, array $params = [])
+    {
+        $url = self::API_URL . $section . $method;
+
+        $paramsLine = '?login=' . $this->instanceLogin .
+            '&passwd=' . $this->instancePassword .
+            '&input_format=' . $this->inputFormat;
+        foreach ($params as $key => $value) {
+            $paramsLine .= '&' . $key . '=' . $value;
+        }
+        $paramsLine .= '&output_format=' . $this->outputFormat;
+
+        return $url . $paramsLine;
     }
 }

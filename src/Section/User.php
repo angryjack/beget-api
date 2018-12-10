@@ -16,14 +16,35 @@ class User extends Beget
 {
     public $section = 'user/';
 
+    /**
+     * Метод возвращает информацию о тарифном плане пользователя,
+     * о некоторых параметрах сервера, на котором пользователь размещается в данный момент,
+     * и используемых лимитах на нем.
+     * @return mixed
+     */
     public function getAccountInfo()
     {
-        $response = parent::sendRequest($this->section, 'getAccountInfo');
-        return $response->getBody();
+        return $this->request($this->section, 'getAccountInfo');
     }
 
-    public function toggleSsh()
+    /**
+     * Метод включает или выключает SSH,
+     * если нет дополнительного параметра ftplogin для основного аккаунта,
+     * с ftplogin для указанного ftp аккаунта
+     * @param $status
+     * @param string $ftplogin
+     * @return mixed
+     */
+    public function toggleSsh($status, $ftplogin = '')
     {
-        //
+        $params = array(
+            'status' => $status
+        );
+
+        if (! empty($ftplogin)) {
+            array_push($params, ['ftplogin' => $ftplogin]);
+        }
+
+        return $this->request($this->section, 'toggleSsh', $params);
     }
 }
