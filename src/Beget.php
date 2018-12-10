@@ -15,7 +15,6 @@ use GuzzleHttp\Client;
  */
 class Beget
 {
-
     const API_URL = 'https://api.beget.com/api/';
 
     /**
@@ -113,6 +112,7 @@ class Beget
      * @param $section
      * @param $method
      * @param array $params
+     * @param string $inputFormat
      * @return string
      */
     protected function makeRequest($section, $method, array $params = [])
@@ -122,9 +122,11 @@ class Beget
         $paramsLine = '?login=' . $this->instanceLogin .
             '&passwd=' . $this->instancePassword .
             '&input_format=' . $this->inputFormat;
+
         foreach ($params as $key => $value) {
             $paramsLine .= '&' . $key . '=' . $value;
         }
+
         $paramsLine .= '&output_format=' . $this->outputFormat;
 
         return $url . $paramsLine;

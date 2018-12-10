@@ -24,7 +24,7 @@ class User extends Beget
      */
     public function getAccountInfo()
     {
-        return $this->request($this->section, 'getAccountInfo');
+        return $this->request($this->section, __FUNCTION__);
     }
 
     /**
@@ -45,6 +45,6 @@ class User extends Beget
             array_push($params, ['ftplogin' => $ftplogin]);
         }
 
-        return $this->request($this->section, 'toggleSsh', $params);
+        return $this->request($this->section, __FUNCTION__, $params);
     }
 }
