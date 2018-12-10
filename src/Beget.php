@@ -88,11 +88,14 @@ class Beget
      * @param $section
      * @param $method
      * @param array $params
-     * @return mixed
+     * @param string $inputFormat
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function request($section, $method, array $params = [])
+    public function request($section, $method, array $params = [], $inputFormat = 'plain')
     {
-        $request = $this->makeRequest($section, $method, $params);
+        $request = $this->makeRequest($section, $method, $params, $inputFormat);
         $response = $this->sendRequest($request);
 
         return $response->getBody();
@@ -100,7 +103,8 @@ class Beget
 
     /**
      * @param $request
-     * @return mixed
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function sendRequest($request)
     {
@@ -114,17 +118,25 @@ class Beget
      * @param array $params
      * @param string $inputFormat
      * @return string
+     * @throws BegetException
      */
-    protected function makeRequest($section, $method, array $params = [])
+    protected function makeRequest($section, $method, array $params = [], $inputFormat = 'plain')
     {
         $url = self::API_URL . $section . $method;
 
         $paramsLine = '?login=' . $this->instanceLogin .
             '&passwd=' . $this->instancePassword .
-            '&input_format=' . $this->inputFormat;
+            '&input_format=' . $inputFormat;
 
-        foreach ($params as $key => $value) {
-            $paramsLine .= '&' . $key . '=' . $value;
+        if ($inputFormat === 'plain') {
+            foreach ($params as $key => $value) {
+                $paramsLine .= '&' . $key . '=' . $value;
+            }
+        } elseif ($inputFormat === 'json') {
+            $paramsLine .= '&input_data=';
+            $paramsLine .= urlencode(json_encode($params));
+        } else {
+            throw new BegetException('Передан неподдерживаемый формат.');
         }
 
         $paramsLine .= '&output_format=' . $this->outputFormat;

@@ -18,7 +18,9 @@ class Backup extends Beget
 
     /**
      * Метод возвращает доступный список резервных файловых копий.
-     * @return mixed
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFileBackupList()
     {
@@ -27,7 +29,9 @@ class Backup extends Beget
 
     /**
      * Метод возвращает доступный список резервных копий баз mysql
-     * @return mixed
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getMysqlBackupList()
     {
@@ -39,7 +43,9 @@ class Backup extends Beget
      * @param $backup_id - идентификатор резервной копии backup_id,
      * если не задан - значит листинг идет по текущей копии;
      * @param $path - путь от корня домашней директории (например "/site.ru/public_html");
-     * @return mixed
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFileList($path, $backup_id = '')
     {
@@ -48,33 +54,38 @@ class Backup extends Beget
         );
 
         if (! empty($backup_id)) {
-            array_push($params, ['backup_id' => $backup_id]);
+            array_merge($params, ['backup_id' => $backup_id]);
         }
 
-        return $this->request($this->section, __FUNCTION__, $params);
+        return $this->request($this->section, __FUNCTION__, $params, 'json');
     }
 
     /**
      * Метод возвращает список баз данных из резервной копии по заданному идентификатору.
      * @param $backup_id - идентификатор резервной копии backup_id,
      * если не задан - значит листинг идет по текущей копии;
-     * @return mixed
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getMysqlList($backup_id = '')
     {
         $params = array();
         if (! empty($backup_id)) {
-            array_push($params, ['backup_id' => $backup_id]);
+            array_merge($params, ['backup_id' => $backup_id]);
         }
 
-        return $this->request($this->section, __FUNCTION__, $params);
+        return $this->request($this->section, __FUNCTION__, $params, 'json');
     }
 
     /**
+     * Метод создает заявку на восстановление данных из резервной копии по заданному пути и резервной копии.
      * @param $backup_id - идентификатор резервной копии backup_id
      * @param $paths - массив (одно или несколько значений) путей для восстановления от корня домашней директории
      * (например "/site.ru/public_html");
-     * @return mixed
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function restoreFile($backup_id, array $paths)
     {
@@ -83,6 +94,75 @@ class Backup extends Beget
             'paths' => $paths
         );
 
-        return $this->request($this->section, __FUNCTION__, $params);
+        return $this->request($this->section, __FUNCTION__, $params, 'json');
+    }
+
+    /**
+     * Метод создает заявку на восстановление БД из резервной копии по заданному имени БД
+     * и идентификатору резервной копии.
+     * @param $backup_id - идентификатор резервной копии backup_id
+     * @param array $bases - массив (одно или несколько значений) имена баз данных MySQL для восстановления
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function restoreMysql($backup_id, array $bases)
+    {
+        $params = array(
+            'backup_id' => $backup_id,
+            'bases' => $bases
+        );
+
+        return $this->request($this->section, __FUNCTION__, $params, 'json');
+    }
+
+    /**
+     * Метод создает заявку на загрузку и выкладывание данных из резервной копии в корень аккаунта.
+     * @param $backup_id  - идентификатор резервной копии backup_id (необязательный),
+     * если не указан то используется текущая копия
+     * @param array $paths - массив (одно или несколько значений) путей для восстановления от корня домашней директории
+     * (например "/site.ru/public_html");
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function downloadFile($backup_id, array $paths)
+    {
+        $params = array(
+            'backup_id' => $backup_id,
+            'paths' => $paths
+        );
+
+        return $this->request($this->section, __FUNCTION__, $params, 'json');
+    }
+
+    /**
+     * Метод создает заявку на загрузку и выкладывание данных из резервной копии в корень аккаунта.
+     * @param $backup_id - идентификатор резервной копии backup_id (необязательный),
+     * если не указан то используется текущая копия
+     * @param array $bases - массив (одно или несколько значений) имена баз данных MySQL для восстановления
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function downloadMysql($backup_id, array $bases)
+    {
+        $params = array(
+            'backup_id' => $backup_id,
+            'bases' => $bases
+        );
+
+        return $this->request($this->section, __FUNCTION__, $params, 'json');
+    }
+
+    /**
+     * Метод возвращает список и статусы заданий по восстановлению и загрузке
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getLog()
+    {
+        return $this->request($this->section, __FUNCTION__);
     }
 }
