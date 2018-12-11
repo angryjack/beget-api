@@ -40,9 +40,9 @@ class Backup extends Beget
 
     /**
      * Метод возвращает список файлов и директорий из резервной копии по заданному пути и идентификатору.
+     * @param $path - путь от корня домашней директории (например "/site.ru/public_html");
      * @param $backup_id - идентификатор резервной копии backup_id,
      * если не задан - значит листинг идет по текущей копии;
-     * @param $path - путь от корня домашней директории (например "/site.ru/public_html");
      * @return \Psr\Http\Message\StreamInterface
      * @throws \Angryjack\Beget\Exception\BegetException
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -80,14 +80,14 @@ class Backup extends Beget
 
     /**
      * Метод создает заявку на восстановление данных из резервной копии по заданному пути и резервной копии.
-     * @param $backup_id - идентификатор резервной копии backup_id
      * @param $paths - массив (одно или несколько значений) путей для восстановления от корня домашней директории
      * (например "/site.ru/public_html");
+     * @param $backup_id - идентификатор резервной копии backup_id
      * @return \Psr\Http\Message\StreamInterface
      * @throws \Angryjack\Beget\Exception\BegetException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function restoreFile($backup_id, array $paths)
+    public function restoreFile(array $paths, $backup_id)
     {
         $params = array(
             'backup_id' => $backup_id,
@@ -100,13 +100,13 @@ class Backup extends Beget
     /**
      * Метод создает заявку на восстановление БД из резервной копии по заданному имени БД
      * и идентификатору резервной копии.
-     * @param $backup_id - идентификатор резервной копии backup_id
      * @param array $bases - массив (одно или несколько значений) имена баз данных MySQL для восстановления
+     * @param $backup_id - идентификатор резервной копии backup_id
      * @return \Psr\Http\Message\StreamInterface
      * @throws \Angryjack\Beget\Exception\BegetException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function restoreMysql($backup_id, array $bases)
+    public function restoreMysql(array $bases, $backup_id)
     {
         $params = array(
             'backup_id' => $backup_id,
@@ -118,15 +118,15 @@ class Backup extends Beget
 
     /**
      * Метод создает заявку на загрузку и выкладывание данных из резервной копии в корень аккаунта.
-     * @param $backup_id  - идентификатор резервной копии backup_id (необязательный),
-     * если не указан то используется текущая копия
      * @param array $paths - массив (одно или несколько значений) путей для восстановления от корня домашней директории
      * (например "/site.ru/public_html");
+     * @param $backup_id  - идентификатор резервной копии backup_id (необязательный),
+     * если не указан то используется текущая копия
      * @return \Psr\Http\Message\StreamInterface
      * @throws \Angryjack\Beget\Exception\BegetException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function downloadFile($backup_id, array $paths)
+    public function downloadFile(array $paths, $backup_id = '')
     {
         $params = array(
             'backup_id' => $backup_id,
@@ -138,14 +138,14 @@ class Backup extends Beget
 
     /**
      * Метод создает заявку на загрузку и выкладывание данных из резервной копии в корень аккаунта.
+     * @param array $bases - массив (одно или несколько значений) имена баз данных MySQL для восстановления
      * @param $backup_id - идентификатор резервной копии backup_id (необязательный),
      * если не указан то используется текущая копия
-     * @param array $bases - массив (одно или несколько значений) имена баз данных MySQL для восстановления
      * @return \Psr\Http\Message\StreamInterface
      * @throws \Angryjack\Beget\Exception\BegetException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function downloadMysql($backup_id, array $bases)
+    public function downloadMysql(array $bases, $backup_id = '')
     {
         $params = array(
             'backup_id' => $backup_id,
