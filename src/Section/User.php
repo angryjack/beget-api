@@ -20,7 +20,9 @@ class User extends Beget
      * Метод возвращает информацию о тарифном плане пользователя,
      * о некоторых параметрах сервера, на котором пользователь размещается в данный момент,
      * и используемых лимитах на нем.
-     * @return mixed
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAccountInfo()
     {
@@ -31,9 +33,12 @@ class User extends Beget
      * Метод включает или выключает SSH,
      * если нет дополнительного параметра ftplogin для основного аккаунта,
      * с ftplogin для указанного ftp аккаунта
-     * @param $status
-     * @param string $ftplogin
-     * @return mixed
+     * @param $status - 1 - включить, 0 - выключить;
+     * @param string $ftplogin - login ftp аккаунта, если передан, включает\отключает доступ к ftp аккаунту по SSH
+     * если не передан включает\отключает доступ по SSH к основному аккаунту пользователя;
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function toggleSsh($status, $ftplogin = '')
     {
@@ -42,7 +47,7 @@ class User extends Beget
         );
 
         if (! empty($ftplogin)) {
-            array_push($params, ['ftplogin' => $ftplogin]);
+            array_merge($params, ['ftplogin' => $ftplogin]);
         }
 
         return $this->request($this->section, __FUNCTION__, $params);
