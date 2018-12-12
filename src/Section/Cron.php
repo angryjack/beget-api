@@ -12,7 +12,7 @@ use Angryjack\Beget\Beget;
  * Класс управления Cron
  * @package Angryjack\Beget\Section
  */
-class Crontab extends Beget
+class Cron extends Beget
 {
     public $section = 'cron/';
 
