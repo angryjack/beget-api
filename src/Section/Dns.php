@@ -50,5 +50,4 @@ class Dns extends Beget
 
         return $this->request($this->section, __FUNCTION__, $params, 'json');
     }
-
 }
