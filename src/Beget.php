@@ -30,32 +30,24 @@ class Beget
     /**
      * @var string
      */
-    protected $instanceLogin;
+    protected $login;
 
     /**
      * @var string
      */
-    protected $instancePassword;
+    protected $password;
 
     /**
      * Beget constructor.
      * @param string $login
      * @param string $password
-     * @throws BegetException
      */
-    public function __construct($login = '', $password = '')
+    public function __construct($login, $password)
     {
-        if (empty($login)) {
-            throw new BegetException('Логин не передан.');
-        }
-        if (empty($password)) {
-            throw new BegetException('Пароль не передан.');
-        }
-
         self::validateLogin($login);
 
-        $this->instanceLogin = $login;
-        $this->instancePassword = $password;
+        $this->login = $login;
+        $this->password = $password;
     }
 
     /**
@@ -74,14 +66,11 @@ class Beget
      */
     public function api($section)
     {
-        if (empty($section)) {
-            throw new \InvalidArgumentException('Не указан раздел API.');
-        }
         $section = ucfirst(strtolower($section));
 
         $class = __NAMESPACE__ . '\Section\\' . $section;
 
-        return new $class($this->instanceLogin, $this->instancePassword);
+        return new $class($this->login, $this->password);
     }
 
     /**
@@ -124,8 +113,8 @@ class Beget
     {
         $url = self::API_URL . $section . $method;
 
-        $paramsLine = '?login=' . $this->instanceLogin .
-            '&passwd=' . $this->instancePassword .
+        $paramsLine = '?login=' . $this->login .
+            '&passwd=' . $this->password .
             '&input_format=' . $inputFormat;
 
         if ($inputFormat === 'plain') {
