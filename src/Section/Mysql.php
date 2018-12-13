@@ -39,7 +39,7 @@ class Mysql extends Beget
      */
     public function addDb($suffix, $password)
     {
-        if (strlen($this->login . '_' . $suffix ) > 16) {
+        if (strlen($this->login . '_' . $suffix) > 16) {
             throw new BegetException('Имя должно быть не длиннее 16 символов.');
         }
 
@@ -67,7 +67,7 @@ class Mysql extends Beget
      */
     public function addAccess($suffix, $access, $password)
     {
-        if (strlen($this->login . '_' . $suffix ) > 16) {
+        if (strlen($this->login . '_' . $suffix) > 16) {
             throw new BegetException('Имя должно быть не длиннее 16 символов.');
         }
 

@@ -41,7 +41,7 @@ class Ftp extends Beget
      */
     public function add($suffix, $homedir, $password)
     {
-        if (strlen($this->login . '_' . $suffix ) > 17) {
+        if (strlen($this->login . '_' . $suffix) > 17) {
             throw new BegetException('Имя должно быть не длиннее 17 символов.');
         }
 
