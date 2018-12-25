@@ -14,6 +14,8 @@ $ composer require angryjack/beget-api
 
 ### Инициализация
 ``` php
+use Angryjack\Beget\Beget;
+
 $beget = new Beget('login', 'password');
 ```
 ### Общая информация по использованию
