@@ -244,4 +244,23 @@ class Domain extends Beget
 
         return $this->request($this->section, __FUNCTION__, $params);
     }
+
+    /**
+     * Метод изменяет версию php на переданную. Позволяет установить и снять режим cgi
+     * @param $full_fqdn - полное имя домена, для которого необходимо изменить версию php;
+     * @param $php_version - версия php, на которую будет произведено изменение;
+     * @param $is_cgi - установить или снять режим cgi. По умолчанию имеет значение false;
+     * @return \Psr\Http\Message\StreamInterface
+     * @throws \Angryjack\Beget\Exception\BegetException
+     */
+    public function changePhpVersion($full_fqdn, $php_version, $is_cgi)
+    {
+        $params = array(
+            'full_fqdn' => $full_fqdn,
+            'php_version' => $php_version,
+            'is_cgi' => $is_cgi,
+        );
+
+        return $this->request($this->section, __FUNCTION__, $params, 'json');
+    }
 }
