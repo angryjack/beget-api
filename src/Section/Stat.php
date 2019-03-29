@@ -14,7 +14,7 @@ use Angryjack\Beget\Beget;
  */
 class Stat extends Beget
 {
-    public $section = 'mail/';
+    public $section = 'stat/';
 
     /**
      * Метод возвращает информацию о средней нагрузке на сайтах пользователя за последний месяц

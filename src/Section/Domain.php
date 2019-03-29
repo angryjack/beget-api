@@ -14,7 +14,7 @@ use Angryjack\Beget\Beget;
  */
 class Domain extends Beget
 {
-    public $section = 'mysql/';
+    public $section = 'domain/';
 
     /**
      * Метод возвращает список доменов на аккаунте пользователя.
