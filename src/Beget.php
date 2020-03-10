@@ -55,8 +55,8 @@ class Beget
      */
     public static function validateLogin($login)
     {
-        if (strlen($login) < 6) {
-            throw new \InvalidArgumentException('Логин слишком короткий. Мин. длина логина 6 символов.');
+        if (strlen($login) < 5) {
+            throw new \InvalidArgumentException('Логин слишком короткий. Мин. длина логина 5 символов.');
         }
     }
 
