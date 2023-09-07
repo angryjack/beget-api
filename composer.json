@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A PHP library for using Beget's API",
     "keywords": [
-        "angryjack", "beget-api", "beget-php-library"
+        "beget-api", "beget-php-library"
     ],
     "homepage": "https://github.com/ex-Askja/beget-api",
     "license": "MIT",
@@ -13,10 +13,16 @@
             "email": "angryj2ck@gmail.com",
             "homepage": "https://github.com/angryjack",
             "role": "Developer"
+        },
+        {
+            "name": "askja",
+            "email": "ex.sirenia@gmail.com",
+            "homepage": "https://github.com/ex-askja",
+            "role": "Developer"
         }
     ],
     "require": {
-        "php" : ">=5.6",
+        "php" : ">=7.2",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.5"
     },
@@ -27,11 +33,6 @@
     "autoload": {
         "psr-4": {
             "Angryjack\\Beget\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Angryjack\\Beget\\Test\\": "tests"
         }
     },
     "scripts": {
