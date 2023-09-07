@@ -1,11 +1,11 @@
 {
-    "name": "angryjack/beget-api",
+    "name": "askja/beget-api-fork",
     "type": "library",
     "description": "A PHP library for using Beget's API",
     "keywords": [
         "angryjack", "beget-api", "beget-php-library"
     ],
-    "homepage": "https://github.com/angryjack/beget-api",
+    "homepage": "https://github.com/ex-Askja/beget-api",
     "license": "MIT",
     "authors": [
         {
